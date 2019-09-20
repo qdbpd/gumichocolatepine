@@ -1,0 +1,55 @@
+#main {
+  width: 980px;
+  p {
+    margin: 0;
+  }
+}
+
+// mixinで定義したものを
+@mixin hoge($color: #fff, $fSize: 16px) {
+  color: $color;
+  font-size: $fSize;
+}
+//   includeで使える
+.text {
+  @include hoge(black, 20px);
+}
+.text2 {
+  // 引数は初期値のを使用
+  @include hoge();
+}
+
+//   値に,が含まれるプロパティには①()で囲んで呼び出すか、
+@mixin hoge2($family) {
+  font-family: $family;
+}
+.text {
+  @include hoge2((Arial, Helvetica, sans-serif));
+}
+
+// ②mixinのほうの引数に...をつける
+
+@mixin hoge3($family...) {
+  font-family: $family;
+}
+.text {
+  @include hoge3(Arial, Helvetica, sans-serif);
+}
+
+// @mixinの中で@content;と記述するとコンテントブロックを渡すことができる
+@mixin hoge4() {
+    // js有効時には非表示にしたい
+    .js & {
+      display: none;
+      @content;
+    }
+  }
+  .div {
+    @include hoge4();
+  }
+  .div2 {
+    @include hoge4() {
+      // この中が@mixinの@contentに追加
+      font-weight: bold;
+    }
+  }
